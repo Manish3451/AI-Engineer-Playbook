@@ -25,7 +25,6 @@ class LinearRegression:
         return X @ self.weights + self.bias
 
 
-
 if __name__ == "__main__":
     X, y = make_regression(n_samples=100, n_features=3, noise=10, random_state=42)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)

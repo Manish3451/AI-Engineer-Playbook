@@ -42,19 +42,18 @@ If n is 1 (which has no prime factors), output an empty list []."""
 
 # print(prime_factors(12))
 
-def is_prime(n):
-    if n < 2:
-        return False
-    for i in range(2, int(n**0.5) + 1):
-        if n % i == 0:
-            return False
-    return True
-
 def prime_factors(n):
-    ans = []
-    for i in range(2, n + 1):
-        if n % i == 0 and is_prime(i):
-            ans.append(i)
-    return ans
+    factors = set()
+    divisor = 2
+    
+    while n > 1:
+        while n % divisor == 0:
+            factors.add(divisor)
+            n //= divisor
+        divisor += 1
+    
+    return list(factors)
 
 print(prime_factors(12))  # Output: [2, 3]
+print(prime_factors(30))  # Output: [2, 3, 5]
+print(prime_factors(36))  # Output: [2, 3]

@@ -1,6 +1,6 @@
 import numpy as np 
 import pandas as pd 
-
+import matplotlib.pyplot as plt 
 
 class LogisticRegression:
     def __init__(self, learning_rate=0.01, n_iterations=1000):
@@ -60,3 +60,50 @@ y_pred = model.predict(X)
 # Calculate accuracy
 accuracy = np.mean(y == y_pred)
 print(f"Accuracy: {accuracy:.2f}")
+
+
+
+
+# Visualizations
+plt.figure(figsize=(15, 5))
+
+# Plot 1: Training loss
+plt.subplot(1, 3, 1)
+plt.plot(model.losses)
+plt.title('Training Loss')
+plt.xlabel('Iterations')
+plt.ylabel('Loss')
+plt.grid(True)
+
+# Plot 2: Decision boundary
+plt.subplot(1, 3, 2)
+# Create mesh for decision boundary
+x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.1),
+                     np.arange(y_min, y_max, 0.1))
+
+Z = model.predict(np.c_[xx.ravel(), yy.ravel()])
+Z = Z.reshape(xx.shape)
+
+plt.contourf(xx, yy, Z, alpha=0.4)
+plt.scatter(X[:, 0], X[:, 1], c=y, cmap='bwr', edgecolors='k')
+plt.title('Decision Boundary')
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 2')
+
+# Plot 3: Predictions vs Actual
+plt.subplot(1, 3, 3)
+plt.scatter(range(len(y)), y, color='blue', label='Actual', alpha=0.6)
+plt.scatter(range(len(y_pred)), y_pred, color='red', label='Predicted', alpha=0.6)
+plt.title('Predictions vs Actual')
+plt.xlabel('Sample Index')
+plt.ylabel('Class')
+plt.legend()
+
+plt.tight_layout()
+plt.show()
+
+# Print model parameters
+print(f"\nModel weights: {model.weights}")
+print(f"Model bias: {model.bias:.4f}")
